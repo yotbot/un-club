@@ -1,0 +1,111 @@
+---
+const arch = [
+  ["Naam", "UNCLUB"],
+  ["Positionering", "De grootste sportschool van Nederland. Zonder één locatie."],
+  ["Payoff", "Je bent al lid."],
+  ["Ritme", "Open. Find. Join. Move."],
+  [
+    "Belofte",
+    "Waar je ook bent en hoe je ook beweegt: UNCLUB laat zien wat er kan, brengt je bij de juiste mensen en maakt jouw beweging onderdeel van één actief leven.",
+  ],
+  [
+    "Toon",
+    "Kort, zeker, uitnodigend. Geen fitnessjargon, geen motivatietaal. Wij vertellen wat er vanavond gebeurt, niet wie je zou moeten worden.",
+  ],
+];
+---
+
+<section class="section section--dark brand" data-theme="dark">
+  <div class="container">
+    <p class="eyebrow" data-reveal>Merk</p>
+    <p class="display brand-big" data-fill>Je bent al lid.</p>
+
+    <div class="brand-grid">
+      <p class="lead brand-text" data-reveal>
+        Drie woorden die het hele idee dragen. Er is geen drempel, geen contract, geen gebouw waar je eerst naartoe
+        moet. Het aanbod is er al, de mensen zijn er al, de plek is er al. Je hoeft alleen aan te sluiten.
+      </p>
+
+      <div>
+        <p class="arch-label" data-reveal>Merkarchitectuur</p>
+        <dl class="arch" data-stagger>
+          {
+            arch.map(([k, v]) => (
+              <div data-stagger-item>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand {
+    border-top: 1px solid rgb(255 255 255 / 0.08);
+  }
+
+  .brand-big {
+    margin-top: 1.5rem;
+    font-size: clamp(3.5rem, 1rem + 12vw, 13rem);
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .brand-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .brand-text {
+    color: #e7e4de;
+    max-width: 40ch;
+  }
+
+  .arch-label {
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .arch {
+    margin: 1rem 0 0;
+  }
+
+  .arch div {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .arch dt {
+    font-weight: 800;
+  }
+
+  .arch dd {
+    margin: 0;
+    color: #d8d4cd;
+  }
+
+  @media (max-width: 60rem) {
+    .brand-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .arch div {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+</style>

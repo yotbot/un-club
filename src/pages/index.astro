@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import Marquee from "../components/Marquee.astro";
+import Problem from "../components/Problem.astro";
+import MapSection from "../components/MapSection.astro";
+import ForEveryone from "../components/ForEveryone.astro";
+import Products from "../components/Products.astro";
+import Route from "../components/Route.astro";
+import Gyms from "../components/Gyms.astro";
+import Pass from "../components/Pass.astro";
+import Flywheel from "../components/Flywheel.astro";
+import Brand from "../components/Brand.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout>
+  <Hero />
+  <Marquee />
+  <Problem />
+  <MapSection />
+  <ForEveryone />
+  <Products />
+  <Route />
+  <Marquee items={["Runclub", "Bootcamp", "Park yoga", "Fietsgroep", "Zwembad", "Lege uren"]} variant="ink" tilt={1.5} />
+  <Gyms />
+  <Pass />
+  <Flywheel />
+  <Brand />
+  <Footer />
+</Layout>

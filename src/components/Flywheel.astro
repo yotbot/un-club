@@ -1,0 +1,191 @@
+---
+const nodes = ["Sporters", "Activiteiten", "Organisatoren", "Meer aanbod", "Meer sporters"];
+const R = 200;
+const C = 250;
+const pts = nodes.map((label, i) => {
+  const a = (-90 + i * (360 / nodes.length)) * (Math.PI / 180);
+  return {
+    label,
+    x: C + R * Math.cos(a),
+    y: C + R * Math.sin(a),
+    accent: i === 0 || i === nodes.length - 1,
+  };
+});
+---
+
+<section class="section section--dark flywheel" data-theme="dark">
+  <div class="container fly-grid">
+    <div>
+      <p class="eyebrow" data-reveal>Waarom dit groter is dan een app</p>
+      <h2 class="display h2 fly-title" data-split>Meer dan een bootcampapp.</h2>
+      <p class="fly-text" data-reveal>
+        De kaart is alleen de eerste stap. De echte ambitie is een netwerklaag over de hele sportmarkt. Hoe meer
+        sporters meedoen, hoe aantrekkelijker het wordt om aanbod te plaatsen. Meer aanbod maakt de kaart waardevoller,
+        en dat trekt weer meer sporters.
+      </p>
+      <p class="fly-note muted" data-reveal>Iedere stad waarin dit op gang komt, wordt vanzelf de plek waar sport gebeurt.</p>
+    </div>
+
+    <div class="wheel" data-wheel>
+      <svg viewBox="0 0 500 500" aria-hidden="true">
+        <circle cx={C} cy={C} r={R} class="wheel-track"></circle>
+        <circle cx={C} cy={C} r={R} class="wheel-progress" data-wheel-progress transform={`rotate(-90 ${C} ${C})`}></circle>
+        <g class="wheel-orbit">
+          <circle cx={C} cy={C - R} r="7" class="wheel-runner"></circle>
+        </g>
+        {pts.map((p) => <circle cx={p.x} cy={p.y} r="10" class:list={["wheel-node", { "is-accent": p.accent }]} data-wheel-node />)}
+      </svg>
+      {
+        pts.map((p) => (
+          <span
+            class:list={["wheel-label", { "is-accent": p.accent }]}
+            style={`left:${(p.x / 500) * 100}%;top:${(p.y / 500) * 100}%`}
+          >
+            <span class="wheel-pill" data-wheel-label>{p.label}</span>
+          </span>
+        ))
+      }
+      <div class="wheel-center">
+        <span>UNCLUB</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fly-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: center;
+  }
+
+  .fly-title {
+    margin-top: 1.25rem;
+  }
+
+  .fly-text {
+    margin-top: 1.75rem;
+    max-width: 52ch;
+    color: #e7e4de;
+  }
+
+  .fly-note {
+    margin-top: 1.25rem;
+  }
+
+  .wheel {
+    position: relative;
+    width: min(100%, 34rem);
+    justify-self: center;
+    aspect-ratio: 1;
+  }
+
+  .wheel svg {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .wheel-track {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.12);
+    stroke-width: 2;
+  }
+
+  .wheel-progress {
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .wheel-orbit {
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+    animation: orbit 9s linear infinite;
+  }
+
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .wheel-runner {
+    fill: #fff;
+  }
+
+  .wheel-node {
+    fill: var(--ink);
+    stroke: #fff;
+    stroke-width: 3;
+  }
+
+  .wheel-node.is-accent {
+    stroke: var(--orange);
+    fill: var(--orange);
+  }
+
+  .wheel-label {
+    position: absolute;
+    translate: -50% -50%;
+  }
+
+  .wheel-pill {
+    display: block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 100vw;
+    background: var(--ink-2);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    font-size: clamp(0.65rem, 0.55rem + 0.4vw, 0.85rem);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .wheel-label.is-accent .wheel-pill {
+    background: var(--orange);
+    box-shadow: none;
+  }
+
+  /* nudge labels off the ring */
+  .wheel-label:nth-of-type(1) {
+    translate: -50% -170%;
+  }
+  .wheel-label:nth-of-type(2) {
+    translate: -20% -130%;
+  }
+  .wheel-label:nth-of-type(3) {
+    translate: -30% 60%;
+  }
+  .wheel-label:nth-of-type(4) {
+    translate: -70% 60%;
+  }
+  .wheel-label:nth-of-type(5) {
+    translate: -80% -130%;
+  }
+
+  .wheel-center {
+    position: absolute;
+    inset: 32%;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.04);
+    font-size: clamp(1.25rem, 0.8rem + 1.5vw, 2rem);
+    font-weight: 850;
+    font-variation-settings: "wdth" 112;
+    letter-spacing: -0.03em;
+  }
+
+  @media (max-width: 60rem) {
+    .fly-grid {
+      grid-template-columns: 1fr;
+    }
+    .wheel {
+      width: min(86%, 30rem);
+      margin-top: 2rem;
+    }
+  }
+</style>

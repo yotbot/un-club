@@ -1,0 +1,86 @@
+---
+interface Props {
+  items?: string[];
+  variant?: "orange" | "ink";
+  tilt?: number;
+}
+
+const { items = ["Open.", "Find.", "Join.", "Move."], variant = "orange", tilt = -2 } = Astro.props;
+const group = [...items, ...items];
+---
+
+<div class:list={["marquee", `marquee--${variant}`]} style={`--tilt:${tilt}deg`} aria-hidden="true" data-marquee>
+  <div class="marquee-track" data-marquee-track>
+    {
+      [0, 1].map(() => (
+        <div class="marquee-group">
+          {group.map((t) => (
+            <span class="marquee-item">
+              {t}
+              <span class="marquee-dot" />
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    z-index: 2;
+    margin-block: -1.5rem;
+    overflow: hidden;
+    rotate: var(--tilt);
+    scale: 1.04;
+    padding-block: 1.1rem;
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .marquee--ink {
+    background: var(--ink);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee-group {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding-right: clamp(1.25rem, 3vw, 2.5rem);
+    font-size: clamp(2rem, 1.2rem + 3.5vw, 4.5rem);
+    font-weight: 850;
+    font-variation-settings: "wdth" 112;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .marquee-dot {
+    width: 0.32em;
+    height: 0.32em;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.85;
+  }
+
+  :global(html:not(.js)) .marquee-track {
+    animation: marquee 30s linear infinite;
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

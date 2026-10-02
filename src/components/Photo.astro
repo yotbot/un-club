@@ -1,0 +1,40 @@
+---
+import { images, src, srcset, type Slot } from "../lib/images";
+
+interface Props {
+  slot: Slot;
+  /** width / height of the crop */
+  ratio?: number;
+  sizes?: string;
+  class?: string;
+  eager?: boolean;
+  [key: `data-${string}`]: unknown;
+}
+
+const { slot, ratio, sizes = "(min-width: 60rem) 40vw, 90vw", class: className, eager, ...rest } = Astro.props;
+const img = images[slot];
+const h = ratio ? Math.round(800 / ratio) : Math.round((800 * img.height) / img.width);
+---
+
+<figure class:list={["photo", className]} style={`--photo-color:${img.color}`} {...rest}>
+  <img
+    src={src(img, 800, ratio)}
+    srcset={srcset(img, ratio)}
+    sizes={sizes}
+    width="800"
+    height={h}
+    alt={img.alt}
+    loading={eager ? "eager" : "lazy"}
+    decoding="async"
+    fetchpriority={eager ? "high" : undefined}
+  />
+  <a class="photo-credit" href={img.photoUrl} target="_blank" rel="noopener">
+    Foto: {img.author} / Unsplash
+  </a>
+</figure>
+
+<style>
+  figure {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,248 @@
+---
+const products = [
+  {
+    n: "01",
+    name: "MAP",
+    q: "Wat kan ik doen?",
+    body: "De live kaart. Alles wat vandaag, vanavond en morgen in jouw buurt gebeurt, op sport, tijd, niveau en prijs. Je ziet wie organiseert, wie meedoet, en sluit met één tik aan.",
+    tag: "Trekt je naar binnen.",
+    icon: "map",
+  },
+  {
+    n: "02",
+    name: "CLUB",
+    q: "Met wie sport ik?",
+    body: "Je netwerk rond echte beweging. Mensen, trainers en groepen die je volgt en die jou volgen. Je ziet waar bekenden aansluiten en organiseert zelf activiteiten.",
+    tag: "Laat je terugkomen.",
+    icon: "club",
+  },
+  {
+    n: "03",
+    name: "ME",
+    q: "Word ik fitter?",
+    body: "Je sportpaspoort. Alles wat je gedaan hebt, hoe consistent je bent en hoe je vooruitgaat. Later gekoppeld aan wearables en coaching.",
+    tag: "Geeft reden om te blijven.",
+    icon: "me",
+  },
+  {
+    n: "04",
+    name: "ROUTE",
+    q: "Waar wil ik heen?",
+    body: "Je doel, vertaald naar een weekprogramma. Niet uit oefeningen op papier, maar uit activiteiten op de kaart. Kies een doel en jouw manier van sporten. UNCLUB plant de rest.",
+    tag: "Geeft richting.",
+    icon: "route",
+  },
+];
+
+const flow = ["Open", "Map", "Join", "Club", "Me", "Route", "Map"];
+---
+
+<section class="section products" id="producten" data-theme="light">
+  <div class="container">
+    <div class="products-head">
+      <p class="eyebrow" data-reveal>Het product</p>
+      <h2 class="display h2" data-split>Vier producten. Eén club.</h2>
+      <p class="lead products-lead" data-reveal>
+        <b>MAP</b> laat zien wat er is. <b>CLUB</b> laat zien wie meedoet. <b>ME</b> laat zien hoe je groeit.{" "}
+        <b>ROUTE</b> laat zien waar je heen gaat.
+      </p>
+    </div>
+
+    <ol class="products-list" data-deal>
+      {
+        products.map((p) => (
+          <li class="product" data-deal-item>
+            <div class="product-top">
+              <span class="product-n">{p.n}</span>
+              <svg class="product-icon" viewBox="0 0 48 48" aria-hidden="true">
+                {p.icon === "map" && (
+                  <>
+                    <path d="M6 12l12-5 12 5 12-5v29l-12 5-12-5-12 5z" />
+                    <path d="M18 7v29M30 12v29" />
+                  </>
+                )}
+                {p.icon === "club" && (
+                  <>
+                    <circle cx="17" cy="17" r="6" />
+                    <circle cx="33" cy="20" r="5" />
+                    <path d="M6 40c1-7 6-11 11-11s10 4 11 11M27 40c.5-5 3-8 7-8s7 3 8 8" />
+                  </>
+                )}
+                {p.icon === "me" && (
+                  <>
+                    <rect x="9" y="6" width="30" height="36" rx="3" />
+                    <path d="M15 33l6-7 5 4 7-10" />
+                  </>
+                )}
+                {p.icon === "route" && (
+                  <>
+                    <circle cx="11" cy="38" r="4" />
+                    <circle cx="37" cy="10" r="4" />
+                    <path d="M14 35c8-6 2-13 10-16s8-4 10-6" stroke-dasharray="3 4" />
+                  </>
+                )}
+              </svg>
+            </div>
+            <h3 class="product-name">{p.name}</h3>
+            <p class="product-q">{p.q}</p>
+            <p class="product-body">{p.body}</p>
+            <p class="product-tag">{p.tag}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <ol class="flow" aria-label="De cirkel van UNCLUB" data-flow>
+      {
+        flow.map((f, i) => (
+          <>
+            <li data-flow-item>{f}</li>
+            {i < flow.length - 1 && (
+              <li class="flow-arrow" aria-hidden="true">
+                →
+              </li>
+            )}
+          </>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .products-head {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 62rem;
+  }
+
+  .products-lead b {
+    font-weight: 800;
+  }
+
+  .products-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(0.75rem, 1.5vw, 1.5rem);
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    border-top: 6px solid var(--orange);
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--paper);
+    transition:
+      transform 0.5s var(--ease-energy),
+      box-shadow 0.5s;
+  }
+
+  .product:hover {
+    transform: translateY(-0.5rem) rotate(-1deg);
+    box-shadow: 0 2rem 3rem -2rem rgb(0 0 0 / 0.3);
+  }
+
+  .product-top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .product-n {
+    color: var(--orange);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .product-icon {
+    width: 2.75rem;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .product:hover .product-icon {
+    stroke: var(--orange);
+  }
+
+  .product-name {
+    margin-top: 0.75rem;
+    font-size: clamp(2.2rem, 1.6rem + 1.8vw, 3.2rem);
+    font-weight: 850;
+    font-variation-settings: "wdth" 112;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .product-q {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+    font-weight: 750;
+  }
+
+  .product-body {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .product-tag {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: var(--orange);
+    font-weight: 800;
+  }
+
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: 3rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+  }
+
+  [data-flow-item] {
+    padding: 0.35rem 0.8rem;
+    border-radius: 100vw;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+
+  [data-flow-item].is-active {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .flow-arrow {
+    align-self: center;
+  }
+
+  @media (max-width: 70rem) {
+    .products-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .products-list {
+      grid-template-columns: 1fr;
+    }
+    .flow-arrow {
+      display: none;
+    }
+  }
+</style>

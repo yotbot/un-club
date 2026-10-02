@@ -1,0 +1,265 @@
+---
+import Photo from "./Photo.astro";
+---
+
+<section class="hero section--dark" id="top" data-theme="dark" data-hero>
+  <div class="container hero-grid">
+    <div class="hero-head">
+      <p class="eyebrow" data-hero-fade>Idea · 2026</p>
+      <h1 class="display h1 hero-title" data-split data-split-delay="intro">
+        Uber bezit geen auto's.<br />
+        Airbnb geen hotels.<br />
+        <span class="accent">UNCLUB geen sportscholen.</span>
+      </h1>
+    </div>
+    <div class="hero-copy">
+      <p class="lead hero-lead" data-hero-fade>
+        Wij bouwen de sportinfrastructuur van Nederland niet opnieuw. Wij verbinden wat er al is: de trainers, de
+        groepen, de verenigingen, de buitenruimte en de lege uren in bestaande accommodaties. En maken daar één club
+        van.
+      </p>
+      <div class="hero-ctas" data-hero-fade>
+        <a href="#kaart" class="btn btn--orange" data-button>
+          <span data-button-text>Open de kaart</span><span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#producten" class="btn btn--ghost" data-button>
+          <span data-button-text>Hoe het werkt</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-momentum>
+      <div class="hero-card hero-card--1" data-momentum-el data-hero-card>
+        <div data-momentum-target>
+          <Photo slot="hero" ratio={0.78} eager sizes="(min-width: 60rem) 22vw, 50vw" />
+          <span class="chip"><b class="accent">NU</b> Social Run · 11 deelnemers</span>
+        </div>
+      </div>
+      <div class="hero-card hero-card--2" data-momentum-el data-hero-card>
+        <div data-momentum-target>
+          <Photo slot="heroAlt" ratio={0.78} eager sizes="(min-width: 60rem) 22vw, 50vw" />
+          <span class="chip"><b>07:00</b> Park Yoga · morgen</span>
+        </div>
+      </div>
+      <div class="hero-card hero-card--3" data-momentum-el data-hero-card>
+        <div data-momentum-target>
+          <Photo slot="heroThird" ratio={0.78} eager sizes="(min-width: 60rem) 22vw, 50vw" />
+          <span class="chip"><b>18:00</b> Bootcamp · 4 plekken</span>
+        </div>
+      </div>
+
+      <div class="sticker" data-plop data-plop-delay="intro" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <defs>
+            <path id="sticker-circle" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0"></path>
+          </defs>
+          <text>
+            <textPath href="#sticker-circle">JE BENT AL LID · JE BENT AL LID · </textPath>
+          </text>
+        </svg>
+        <span class="sticker-core">U</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container hero-foot" data-hero-fade>
+    <span>De grootste sportschool van Nederland. Zonder één locatie.</span>
+    <span class="scroll-hint"><span class="scroll-dot"></span>Scroll</span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 100svh;
+    padding-top: clamp(7rem, 14vh, 10rem);
+    padding-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      "head head"
+      "copy visual";
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 5rem);
+  }
+
+  .hero-head {
+    grid-area: head;
+  }
+
+  .hero-copy {
+    grid-area: copy;
+  }
+
+  .hero-title {
+    margin-top: 1.5rem;
+    font-size: clamp(2.5rem, 0.9rem + 4.6vw, 6rem);
+  }
+
+  .hero-lead {
+    max-width: 44ch;
+    color: #e7e4de;
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .hero-visual {
+    grid-area: visual;
+    position: relative;
+    aspect-ratio: 1.35;
+    width: 100%;
+    max-width: 38rem;
+    justify-self: end;
+  }
+
+  .hero-card {
+    position: absolute;
+    width: 42%;
+  }
+
+  .hero-card [data-momentum-target] {
+    position: relative;
+    will-change: transform;
+  }
+
+  .hero-card :global(.photo) {
+    border-radius: 1rem;
+    box-shadow: 0 1.5rem 3rem -1rem rgb(0 0 0 / 0.6);
+  }
+
+  .hero-card--1 {
+    top: 8%;
+    left: 0;
+    rotate: -7deg;
+    z-index: 2;
+  }
+
+  .hero-card--2 {
+    top: 0;
+    left: 29%;
+    rotate: 3deg;
+    z-index: 3;
+  }
+
+  .hero-card--3 {
+    top: 12%;
+    right: 0;
+    rotate: 8deg;
+    z-index: 1;
+  }
+
+  .chip {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 650;
+    white-space: nowrap;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 0.2);
+  }
+
+  .sticker {
+    position: absolute;
+    right: -3%;
+    bottom: -6%;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    width: clamp(7rem, 11vw, 9.5rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--orange);
+    color: #fff;
+    rotate: 11deg;
+  }
+
+  .sticker svg {
+    position: absolute;
+    inset: 0;
+    animation: spin 14s linear infinite;
+  }
+
+  .sticker text {
+    fill: currentColor;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .sticker-core {
+    font-size: 2.5rem;
+    font-weight: 900;
+    font-variation-settings: "wdth" 115;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .hero-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    color: var(--muted-light);
+    font-size: 0.8rem;
+  }
+
+  .scroll-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .scroll-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--orange);
+    animation: bob 1.6s var(--ease-osmo) infinite;
+  }
+
+  @keyframes bob {
+    50% {
+      translate: 0 0.35rem;
+    }
+  }
+
+  @media (max-width: 60rem) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas: "head" "copy" "visual";
+    }
+    .hero-visual {
+      justify-self: center;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .chip {
+      font-size: 0.62rem;
+    }
+    .hero-foot span:first-child {
+      max-width: 22ch;
+    }
+  }
+</style>

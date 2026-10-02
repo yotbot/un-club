@@ -1,0 +1,144 @@
+---
+const today = [
+  "De runclub staat in een story die je gemist hebt.",
+  "De bootcamp zit in een groepsapp waar je niet in zit.",
+  "De trainer heeft vier plekken over, maar niemand weet het.",
+  "De sporthal staat om 17:00 leeg.",
+  "Jij hebt een gymabonnement dat je na vier maanden opzegt.",
+];
+---
+
+<section class="section problem" data-theme="light">
+  <div class="container problem-grid">
+    <div>
+      <p class="eyebrow" data-reveal>De grootste sportschool van Nederland</p>
+      <h2 class="display h2 problem-title" data-split>Vind jouw sportmoment. Maak je eigen plan.</h2>
+      <div class="problem-body" data-reveal>
+        <p>
+          Je wilt bewegen. Vanavond, morgenochtend, dit weekend. In het park, bij een trainer, in een runclub, op de
+          fiets, in een sporthal met een leeg uur. Dat aanbod is er, en het is enorm. Maar je vindt het niet. Het
+          leeft in groepsapps, Instagram stories en mond tot mond.
+        </p>
+        <p>Ondertussen betaal je voor een sportschool waar je na vier maanden niet meer komt.</p>
+      </div>
+    </div>
+
+    <div class="today" data-today>
+      <p class="today-label">Vandaag</p>
+      <ul>
+        {
+          today.map((t) => (
+            <li data-today-item>
+              <span class="today-text">{t}</span>
+              <span class="today-strike" aria-hidden="true" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <p class="question" data-question>
+      <span class="question-pre">Niemand beantwoordt de vraag die jij iedere dag stelt:</span>
+      <span class="display question-text" data-split>Wat kan ik <em>nu</em>, <em>hier</em>, met <em>wie</em>?</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .problem {
+    padding-top: clamp(7rem, 15vw, 12rem);
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .problem-title {
+    margin-top: 1.25rem;
+  }
+
+  .problem-body {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+    max-width: 52ch;
+  }
+
+  .today {
+    position: relative;
+    margin-top: clamp(0rem, 8vw, 7rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 0 2rem 4rem -2.5rem rgb(0 0 0 / 0.25);
+  }
+
+  .today-label {
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .today ul {
+    display: grid;
+    gap: 0.25rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .today li {
+    position: relative;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  }
+
+  .today li:last-child {
+    border-bottom: 0;
+  }
+
+  .today-strike {
+    position: absolute;
+    left: -0.25rem;
+    right: -0.25rem;
+    top: 50%;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .question {
+    display: grid;
+    gap: 1rem;
+    margin-top: clamp(4rem, 10vw, 8rem);
+  }
+
+  .question-pre {
+    color: var(--muted);
+  }
+
+  .question-text {
+    font-size: clamp(2.4rem, 1rem + 6vw, 7rem);
+  }
+
+  .question-text em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  @media (max-width: 60rem) {
+    .problem-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

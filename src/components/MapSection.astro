@@ -1,0 +1,451 @@
+---
+type When = "nu" | "vanavond" | "morgen";
+interface Spot {
+  id: string;
+  when: When;
+  time: string;
+  title: string;
+  meta: string;
+  x: number;
+  y: number;
+  flip?: boolean;
+}
+
+const spots: Spot[] = [
+  { id: "social-run", when: "nu", time: "NU", title: "Social Run", meta: "700 m · 11 deelnemers", x: 19, y: 20 },
+  { id: "calisthenics", when: "nu", time: "NU", title: "Calisthenics", meta: "1,1 km · gratis", x: 56, y: 37 },
+  { id: "bootcamp", when: "vanavond", time: "18:00", title: "Bootcamp", meta: "1,4 km · 4 plekken", x: 80, y: 17, flip: true },
+  { id: "walking", when: "vanavond", time: "18:30", title: "Walking Group", meta: "900 m · gratis", x: 19, y: 72 },
+  { id: "strength", when: "vanavond", time: "19:00", title: "Outdoor Strength", meta: "1,8 km · €12", x: 45, y: 88 },
+  { id: "yoga", when: "morgen", time: "07:00", title: "Park Yoga", meta: "600 m · 8 deelnemers", x: 90, y: 40, flip: true },
+  { id: "fietsgroep", when: "morgen", time: "09:30", title: "Fietsgroep", meta: "2,1 km · 6 deelnemers", x: 72, y: 63, flip: true },
+];
+
+const filters = [
+  { value: "alles", label: "Alles" },
+  { value: "nu", label: "Nu" },
+  { value: "vanavond", label: "Vanavond" },
+  { value: "morgen", label: "Morgen" },
+];
+
+// City grid for the illustrated map
+const cols = [0, 165, 330, 495, 660, 825, 1000];
+const rows = [0, 205, 395, 555, 700];
+const blocks = cols.slice(0, -1).flatMap((x, i) =>
+  rows.slice(0, -1).map((y, j) => ({ x: x + 22, y: y + 22, w: cols[i + 1] - x - 44, h: rows[j + 1] - y - 44 })),
+);
+const steps = ["Open", "Discover", "Join", "Move"];
+---
+
+<section class="section map-section" id="kaart" data-theme="light">
+  <div class="container map-grid">
+    <div class="map-copy">
+      <p class="eyebrow" data-reveal>De voordeur</p>
+      <h2 class="display h2" data-split>Open de app. De buurt komt tot leven.</h2>
+      <p class="map-text" data-reveal>
+        De homepage is geen dashboard maar een kaart. Een social run die over twintig minuten vertrekt, een bootcamp
+        vanavond, yoga in het park morgenochtend, een fietsgroep op zondag. Je ziet wie organiseert, hoeveel mensen
+        meedoen en sluit met één tik aan.
+      </p>
+      <p class="lead map-lead" data-reveal>Even makkelijk als een restaurant vinden op een kaart. Net zo dichtbij.</p>
+    </div>
+
+    <div class="map-wrap" data-map>
+      <div class="map">
+        <svg class="map-bg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="1000" height="700" fill="var(--map-bg)"></rect>
+          {blocks.map((b) => <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="6" fill="var(--map-block)" />)}
+          <path d="M120 0 L360 0 L330 220 L285 560 L80 560 Z" fill="var(--map-park)"></path>
+          <path d="M1000 330 L1000 700 L700 700 C780 600 860 520 900 430 C930 380 970 350 1000 330 Z" fill="var(--map-water)"></path>
+          {cols.slice(1, -1).map((x) => <rect x={x - 8} y="0" width="16" height="700" fill="#fff" />)}
+          {rows.slice(1, -1).map((y) => <rect x="0" y={y - 8} width="1000" height="16" fill="#fff" />)}
+          <path d="M0 505 L1000 445" stroke="#fff" stroke-width="22"></path>
+          <path d="M0 505 L1000 445" stroke="var(--map-road)" stroke-width="10"></path>
+        </svg>
+
+        <div class="map-search">
+          <span class="map-search-q">Wat kan ik nu doen?</span>
+          <div class="map-filters" role="group" aria-label="Filter op tijd">
+            {
+              filters.map((f, i) => (
+                <button type="button" data-map-filter={f.value} aria-pressed={i === 0 ? "true" : "false"}>
+                  {f.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="you" style="left:50%;top:52%" aria-label="Jouw locatie">
+          <span class="you-dot"></span><span class="you-label">JIJ</span>
+        </div>
+
+        {
+          spots.map((s) => (
+            <div
+              class:list={["spot", { "spot--flip": s.flip }]}
+              style={`left:${s.x}%;top:${s.y}%`}
+              data-spot
+              data-when={s.when}
+            >
+              <div class="spot-inner" data-spot-inner>
+              <span class="pin" />
+              <div class="spot-card">
+                <p class="spot-title">
+                  <span class:list={["spot-time", { accent: s.time === "NU" }]}>{s.time}</span> {s.title}
+                </p>
+                <div class="spot-row">
+                  <span class="spot-meta">{s.meta}</span>
+                  <button type="button" class="join" data-join={s.id} aria-pressed="false">
+                    JOIN →
+                  </button>
+                </div>
+              </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <ul class="map-list" aria-label="Activiteiten in de buurt">
+        {
+          spots.map((s) => (
+            <li data-spot-row data-when={s.when}>
+              <span class:list={["spot-time", { accent: s.time === "NU" }]}>{s.time}</span>
+              <span class="map-list-main">
+                <b>{s.title}</b>
+                <span class="spot-meta">{s.meta}</span>
+              </span>
+              <button type="button" class="join" data-join={s.id} aria-pressed="false">
+                JOIN →
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+
+      <ol class="steps" aria-label="Zo werkt het" data-steps>
+        {
+          steps.map((s, i) => (
+            <>
+              <li data-step>{s}</li>
+              {i < steps.length - 1 && (
+                <li class="steps-arrow" aria-hidden="true">
+                  →
+                </li>
+              )}
+            </>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .map-section {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .map-copy {
+    position: sticky;
+    top: 7rem;
+  }
+
+  .map-copy .h2 {
+    margin-top: 1.25rem;
+    font-size: clamp(2.3rem, 1.4rem + 3.2vw, 4.6rem);
+  }
+
+  .map-text {
+    margin-top: 1.75rem;
+    max-width: 46ch;
+  }
+
+  .map-lead {
+    margin-top: 1.25rem;
+    font-weight: 600;
+  }
+
+  .map {
+    position: relative;
+    aspect-ratio: 1000 / 700;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 2rem 4rem -2.5rem rgb(0 0 0 / 0.3);
+    container-type: inline-size;
+  }
+
+  .map-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-search {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+    right: 3%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.35rem 0.4rem 0.35rem 1.1rem;
+    border-radius: 100vw;
+    background: #fff;
+    box-shadow: 0 0.5rem 1.5rem -0.75rem rgb(0 0 0 / 0.3);
+  }
+
+  .map-search-q {
+    color: var(--muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .map-filters {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  .map-filters button {
+    padding: 0.4rem 0.7rem;
+    border: 0;
+    border-radius: 100vw;
+    background: none;
+    color: var(--orange);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+
+  .map-filters button[aria-pressed="true"] {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .you {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    translate: -0.5rem -50%;
+  }
+
+  .you-dot {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: var(--you);
+    box-shadow: 0 0 0 0 rgb(47 107 235 / 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  .you-label {
+    color: var(--you);
+    font-size: 0.7rem;
+    font-weight: 800;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 1.25rem rgb(47 107 235 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(47 107 235 / 0);
+    }
+  }
+
+  .spot {
+    position: absolute;
+    z-index: 2;
+    translate: -0.8rem -50%;
+  }
+
+  .spot-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transform-origin: 0.8rem 50%;
+  }
+
+  .spot--flip {
+    translate: calc(-100% + 0.8rem) -50%;
+  }
+
+  .spot--flip .spot-inner {
+    flex-direction: row-reverse;
+    transform-origin: calc(100% - 0.8rem) 50%;
+  }
+
+  .spot.is-hidden {
+    pointer-events: none;
+  }
+
+  .pin {
+    flex-shrink: 0;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0 22%, var(--orange) 24%);
+    box-shadow: 0 0.25rem 0.6rem rgb(0 0 0 / 0.25);
+  }
+
+  .spot-card {
+    min-width: 11rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: #fff;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.06),
+      0 0.6rem 1.25rem -0.6rem rgb(0 0 0 / 0.3);
+  }
+
+  .spot-title {
+    font-size: 0.85rem;
+    font-weight: 750;
+    white-space: nowrap;
+  }
+
+  .spot-time {
+    margin-right: 0.2rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+
+  .spot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .spot-meta {
+    color: var(--muted);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .map-list {
+    display: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+
+  .map-list li {
+    display: grid;
+    grid-template-columns: 3.25rem 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .map-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .map-list li[hidden] {
+    display: none;
+  }
+
+  .map-list-main {
+    display: grid;
+    line-height: 1.3;
+  }
+
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  [data-step].is-active {
+    color: var(--orange);
+  }
+
+  /* Small maps: pins only, list below */
+  @container (max-width: 40rem) {
+    .spot-card {
+      display: none;
+    }
+    .spot,
+    .spot--flip {
+      translate: -50% -50%;
+    }
+  }
+
+  /* Mid-size maps: shrink the cards a little */
+  @container (max-width: 52rem) {
+    .spot-card {
+      min-width: 0;
+      padding: 0.4rem 0.6rem;
+    }
+    .spot-title {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 60rem) {
+    .map-section {
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .map-grid {
+      grid-template-columns: 1fr;
+    }
+    .map-copy {
+      position: static;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .map {
+      aspect-ratio: 4 / 5;
+    }
+    .map-list {
+      display: block;
+    }
+    .map-search-q {
+      display: none;
+    }
+    .map-search {
+      justify-content: center;
+      padding-left: 0.4rem;
+    }
+  }
+</style>

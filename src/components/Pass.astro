@@ -1,0 +1,291 @@
+---
+const why = [
+  "Het maakt <b>Je bent al lid</b> letterlijk: iedereen heeft een pas, vanaf dag één.",
+  "Het verbindt de sportschool op de kaart met de sporter zonder abonnement.",
+  "Het maakt ROUTE boekbaar: iedere sessie op je route open je met dezelfde pas.",
+  "Het is het eerste lidmaatschapsbewijs van een club die overal is en nergens staat.",
+];
+
+const checkins = [
+  { label: "Runclub", time: "di 18:30", pos: "left:-38%;top:6%", rot: -8 },
+  { label: "Zwembad", time: "wo 07:15", pos: "right:-40%;top:26%", rot: 7 },
+  { label: "Bootcamp", time: "do 19:00", pos: "left:-42%;bottom:30%", rot: 5 },
+  { label: "Sportschool", time: "za 10:00", pos: "right:-36%;bottom:8%", rot: -6 },
+];
+
+// Deterministic pseudo-barcode
+const bars = Array.from({ length: 38 }, (_, i) => 1 + ((i * 7 + 3) % 4));
+---
+
+<section class="section section--dark pass" id="pass" data-theme="dark">
+  <div class="container pass-grid">
+    <div class="pass-copy">
+      <p class="eyebrow" data-reveal>Optie · Wat het compleet maakt</p>
+      <h2 class="display h1 pass-title" data-split>Eén pas. Overal welkom.</h2>
+      <p class="pass-text" data-reveal>
+        Een club zonder gebouw heeft één ding nodig dat een gebouw normaal doet: de deur openen. De UNCLUB Pass is die
+        deur. Eén digitale pas op je telefoon waarmee je incheckt bij de runclub, de sportschool om de hoek, het
+        zwembad en de bootcamp in het park. Gratis om te hebben, betalen per keer, of alles in één als je wilt.
+      </p>
+    </div>
+
+    <div class="pass-stage" data-tilt>
+      <div class="pass-card" data-tilt-target>
+        <div class="pass-card-top">
+          <span class="pass-logo"><span></span>UNCLUB</span>
+          <span class="pass-type">PASS</span>
+        </div>
+        <p class="pass-member">Jij</p>
+        <dl class="pass-meta">
+          <div><dt>Lid sinds</dt><dd>Altijd</dd></div>
+          <div><dt>Locaties</dt><dd>Heel NL</dd></div>
+        </dl>
+        <div class="pass-barcode" aria-hidden="true">
+          {bars.map((w) => <span style={`width:${w}px`} />)}
+        </div>
+        <p class="pass-pay">Je bent al lid.</p>
+      </div>
+
+      {
+        checkins.map((c) => (
+          <div class="checkin" style={`${c.pos};rotate:${c.rot}deg`} data-plop>
+            <span class="checkin-tick" aria-hidden="true">✓</span>
+            <span>
+              <b>{c.label}</b>
+              <small>Ingecheckt · {c.time}</small>
+            </span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="pass-why">
+      <p class="pass-why-label" data-reveal>Waarom dit het sluitstuk is</p>
+      <ul data-stagger>
+        {why.map((w) => <li data-stagger-item set:html={w} />)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pass {
+    overflow: hidden;
+  }
+
+  .pass-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "copy stage"
+      "why stage";
+    gap: clamp(2.5rem, 5vw, 5rem) clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .pass-copy {
+    grid-area: copy;
+  }
+
+  .pass-stage {
+    grid-area: stage;
+  }
+
+  .pass-why {
+    grid-area: why;
+  }
+
+  .pass-title {
+    margin-top: 1.25rem;
+    font-size: clamp(3rem, 1.5rem + 5.5vw, 7rem);
+  }
+
+  .pass-text {
+    margin-top: 2rem;
+    max-width: 52ch;
+    color: #e7e4de;
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  }
+
+  .pass-stage {
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    width: min(100%, 22rem);
+    perspective: 1200px;
+  }
+
+  .pass-card {
+    position: relative;
+    display: grid;
+    gap: 1.25rem;
+    aspect-ratio: 0.63;
+    padding: 1.75rem;
+    border-radius: 1.5rem;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgb(255 255 255 / 0.22), transparent 55%),
+      linear-gradient(160deg, #f0582f, var(--orange) 45%, #b8340f);
+    color: #fff;
+    box-shadow:
+      0 3rem 5rem -2rem rgb(232 70 30 / 0.45),
+      inset 0 0 0 1px rgb(255 255 255 / 0.2);
+    transform-style: preserve-3d;
+    will-change: transform;
+    align-content: start;
+  }
+
+  .pass-card-top {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .pass-logo {
+    display: grid;
+    gap: 0.25rem;
+    font-weight: 850;
+    letter-spacing: -0.01em;
+  }
+
+  .pass-logo span {
+    width: 1.75rem;
+    height: 3px;
+    background: #fff;
+  }
+
+  .pass-type {
+    padding: 0.2rem 0.6rem;
+    border: 1.5px solid currentColor;
+    border-radius: 100vw;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .pass-member {
+    margin-top: 2.5rem;
+    font-size: clamp(3rem, 2rem + 3vw, 4.5rem);
+    font-weight: 850;
+    font-variation-settings: "wdth" 112;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .pass-meta {
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+  }
+
+  .pass-meta dt {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .pass-meta dd {
+    margin: 0;
+    font-weight: 750;
+  }
+
+  .pass-barcode {
+    display: flex;
+    gap: 2px;
+    height: 3.25rem;
+    margin-top: auto;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+
+  .pass-barcode span {
+    flex-shrink: 0;
+    background: var(--ink);
+  }
+
+  .pass-pay {
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .checkin {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.9rem 0.55rem 0.55rem;
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 1rem 2rem -0.75rem rgb(0 0 0 / 0.6);
+    line-height: 1.2;
+  }
+
+  .checkin b {
+    display: block;
+    font-size: 0.85rem;
+  }
+
+  .checkin small {
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .checkin-tick {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: #1d8a4a;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 900;
+  }
+
+  .pass-why-label {
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .pass-why ul {
+    display: grid;
+    gap: 0;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pass-why li {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+    color: #d8d4cd;
+  }
+
+  .pass-why li :global(b) {
+    color: #fff;
+  }
+
+  @media (max-width: 60rem) {
+    .pass-grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "copy"
+        "stage"
+        "why";
+    }
+    .pass-stage {
+      width: min(62%, 20rem);
+      margin-block: 2rem;
+    }
+    .checkin {
+      font-size: 0.85em;
+    }
+  }
+</style>

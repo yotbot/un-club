@@ -1,0 +1,192 @@
+---
+const links = [
+  { href: "#kaart", label: "Kaart" },
+  { href: "#producten", label: "Producten" },
+  { href: "#route", label: "Route" },
+  { href: "#sportscholen", label: "Sportscholen" },
+  { href: "#pass", label: "Pass" },
+];
+---
+
+<header class="header" data-header data-header-theme="dark">
+  <div class="header-inner">
+    <a href="#top" class="logo" aria-label="UNCLUB, naar boven">
+      <span class="logo-bar"></span>
+      <span>UNCLUB</span>
+    </a>
+
+    <nav class="nav" aria-label="Hoofdmenu">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <a href="#kaart" class="btn btn--orange header-cta" data-button>
+      <span data-button-text>Vind je sportmoment</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+      <span class="visually-hidden">Menu</span>
+      <span class="menu-icon"><span></span><span></span></span>
+    </button>
+  </div>
+
+  <div class="menu" id="menu" data-menu hidden>
+    <nav aria-label="Mobiel menu">
+      {links.map((l) => <a href={l.href} data-menu-link>{l.label}</a>)}
+    </nav>
+    <p>Je bent al lid.</p>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    padding: 1rem var(--gutter) 0;
+    pointer-events: none;
+    transition: transform 0.6s var(--ease-energy);
+  }
+
+  .header.is-hidden {
+    transform: translateY(-120%);
+  }
+
+  .header-inner {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: calc(var(--max) - 2 * var(--gutter));
+    margin-inline: auto;
+    padding: 0.55rem 0.55rem 0.55rem 1.25rem;
+    border-radius: 100vw;
+    background: rgb(244 242 237 / 0.82);
+    color: var(--ink);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06);
+    transition:
+      background-color 0.4s,
+      color 0.4s,
+      box-shadow 0.4s;
+  }
+
+  .header[data-header-theme="dark"] .header-inner {
+    background: rgb(30 30 30 / 0.7);
+    color: #fff;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
+  }
+
+  .logo {
+    display: grid;
+    gap: 0.25rem;
+    font-weight: 850;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .logo-bar {
+    width: 1.75rem;
+    height: 3px;
+    background: var(--orange);
+    transition: width 0.5s var(--ease-energy);
+  }
+
+  .logo:hover .logo-bar {
+    width: 100%;
+  }
+
+  .nav {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+
+  .nav a {
+    position: relative;
+    padding: 0.5rem 0.8rem;
+    border-radius: 100vw;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  .nav a:hover {
+    background: rgb(127 127 127 / 0.14);
+  }
+
+  .header-cta {
+    padding: 0.8em 1.25em;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-left: auto;
+    border: 0;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .menu-icon {
+    display: grid;
+    gap: 5px;
+    width: 1.1rem;
+    margin: auto;
+  }
+
+  .menu-icon span {
+    height: 2px;
+    background: #fff;
+    transition: transform 0.4s var(--ease-energy);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded="true"] .menu-icon span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .menu {
+    pointer-events: auto;
+    margin-top: 0.5rem;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .menu nav {
+    display: grid;
+  }
+
+  .menu a {
+    padding: 0.35rem 0;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .menu p {
+    margin-top: 1rem;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  @media (max-width: 60rem) {
+    .nav,
+    .header-cta {
+      display: none;
+    }
+    .menu-toggle {
+      display: block;
+    }
+  }
+</style>

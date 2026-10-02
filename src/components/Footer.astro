@@ -1,0 +1,168 @@
+---
+import Photo from "./Photo.astro";
+import { images } from "../lib/images";
+
+const credits = Object.values(images).filter((img, i, all) => all.findIndex((o) => o.id === img.id) === i);
+---
+
+<section class="section ambition" data-theme="light">
+  <div class="container">
+    <p class="eyebrow" data-reveal>De ambitie</p>
+    <h2 class="display h2 ambition-title" data-split>Niet de grootste fitnessketen van Nederland bouwen.</h2>
+    <p class="lead ambition-lead" data-reveal>
+      Maar de grootste sportschool van Nederland worden. Zonder zelf één club te hoeven bouwen.
+      <b>Heel Nederland is onze sportschool.</b>
+    </p>
+  </div>
+</section>
+
+<footer class="footer" data-theme="dark" data-footer-parallax>
+  <div class="footer-visual" data-footer-visual>
+    <Photo slot="footer" sizes="100vw" />
+    <div class="footer-overlay"></div>
+  </div>
+
+  <div class="container footer-inner" data-footer-inner>
+    <div class="footer-cta">
+      <p class="footer-brand">UNCLUB</p>
+      <p class="display footer-title">Je bent al lid.</p>
+      <p class="footer-rhythm">Open. Find. Join. Move.</p>
+      <a href="#kaart" class="btn btn--orange" data-button>
+        <span data-button-text>Vind jouw sportmoment</span><span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 UNCLUB · De grootste sportschool van Nederland. Zonder één locatie.</p>
+      <details class="credits">
+        <summary>Fotografie via Unsplash</summary>
+        <ul>
+          {
+            credits.map((c) => (
+              <li>
+                <a href={c.photoUrl} target="_blank" rel="noopener">
+                  Foto
+                </a>{" "}
+                door{" "}
+                <a href={c.authorUrl} target="_blank" rel="noopener">
+                  {c.author}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </details>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ambition {
+    padding-bottom: clamp(6rem, 14vw, 12rem);
+  }
+
+  .ambition-title {
+    margin-top: 1.25rem;
+    max-width: 18ch;
+  }
+
+  .ambition-lead {
+    margin-top: 2rem;
+    max-width: 52ch;
+  }
+
+  .ambition-lead b {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--orange);
+  }
+
+  .footer {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    overflow: hidden;
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .footer-visual {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+  }
+
+  .footer-visual :global(.photo) {
+    height: 100%;
+  }
+
+  .footer-visual :global(.photo-credit) {
+    display: none;
+  }
+
+  .footer-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgb(21 21 21 / 0.92), rgb(21 21 21 / 0.55) 60%, rgb(21 21 21 / 0.35)),
+      linear-gradient(0deg, rgb(21 21 21 / 0.9), transparent 40%);
+  }
+
+  .footer-inner {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-block: clamp(6rem, 12vw, 9rem) 2rem;
+  }
+
+  .footer-cta {
+    align-self: center;
+    padding-left: clamp(1rem, 2vw, 2rem);
+    border-left: 6px solid var(--orange);
+  }
+
+  .footer-brand {
+    color: var(--muted-light);
+    font-weight: 800;
+  }
+
+  .footer-title {
+    margin-top: 0.5rem;
+    font-size: clamp(3.5rem, 1.5rem + 8vw, 10rem);
+  }
+
+  .footer-rhythm {
+    margin: 0.75rem 0 2rem;
+    color: var(--muted-light);
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.35rem);
+  }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem 2rem;
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    color: var(--muted-light);
+    font-size: 0.8rem;
+  }
+
+  .credits summary {
+    cursor: pointer;
+  }
+
+  .credits ul {
+    columns: 2;
+    gap: 2rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .credits a {
+    color: #fff;
+  }
+</style>

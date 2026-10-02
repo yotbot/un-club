@@ -1,0 +1,109 @@
+---
+import Photo from "./Photo.astro";
+import type { Slot } from "../lib/images";
+
+const cards: { who: string; what: string; slot: Slot }[] = [
+  { who: "Een member", what: "zet morgenochtend een 10K run op de kaart.", slot: "member" },
+  { who: "Een trainer", what: "biedt een betaalde bootcamp aan.", slot: "trainer" },
+  { who: "Een yogadocent", what: "geeft een sessie in het park.", slot: "yoga" },
+  { who: "Een vereniging", what: "opent een training voor iedereen.", slot: "vereniging" },
+  { who: "Een sportschool", what: "zet een proefles of dagpas op de kaart.", slot: "sportschool" },
+  { who: "Een buurt", what: "gaat samen wandelen op woensdag.", slot: "buurt" },
+];
+---
+
+<section class="section section--paper everyone" data-theme="light">
+  <div class="container">
+    <div class="everyone-head">
+      <p class="eyebrow" data-reveal>Sport voor iedereen</p>
+      <h2 class="display h2" data-split>Sport toegankelijk voor iedereen.</h2>
+      <p class="lead" data-reveal>
+        De kaart is niet alleen voor commerciële aanbieders. Gratis en betaald, professioneel en sociaal, binnen en
+        buiten staan naast elkaar op dezelfde kaart.
+      </p>
+    </div>
+
+    <ul class="cards" data-momentum data-stagger>
+      {
+        cards.map((c) => (
+          <li class="card" data-momentum-el data-stagger-item>
+            <div class="card-inner" data-momentum-target>
+              <Photo slot={c.slot} ratio={4 / 3} sizes="(min-width: 60rem) 30vw, (min-width: 40rem) 45vw, 90vw" />
+              <div class="card-body">
+                <p class="card-who">{c.who}</p>
+                <p class="h3 card-what">{c.what}</p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .everyone-head {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 60rem;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin: clamp(3rem, 6vw, 5rem) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .card-inner {
+    height: 100%;
+    border-top: 6px solid var(--orange);
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--cream);
+    overflow: hidden;
+    will-change: transform;
+    transition: box-shadow 0.4s;
+  }
+
+  .card:hover .card-inner {
+    box-shadow: 0 2rem 3rem -2rem rgb(0 0 0 / 0.35);
+  }
+
+  .card :global(.photo img) {
+    transition: scale 0.8s var(--ease-energy);
+  }
+
+  .card:hover :global(.photo img) {
+    scale: 1.06;
+  }
+
+  .card-body {
+    padding: 1.25rem 1.4rem 1.6rem;
+  }
+
+  .card-who {
+    color: var(--orange);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-what {
+    margin-top: 0.4rem;
+  }
+
+  @media (max-width: 60rem) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

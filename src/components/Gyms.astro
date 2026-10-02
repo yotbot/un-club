@@ -1,0 +1,196 @@
+---
+import Photo from "./Photo.astro";
+import type { Slot } from "../lib/images";
+
+const offers: { t: string; d: string; slot: Slot }[] = [
+  { t: "Free sport", d: "Een gratis proefles of open training, zichtbaar voor de hele buurt.", slot: "boxing" },
+  { t: "Eenmalig bezoek", d: "Een dagpas of losse les, direct te boeken. Geen contract, geen intake.", slot: "sportschool" },
+  { t: "Open class", d: "Groepslessen met vrije plekken, op de kaart naast bootcamp en yoga.", slot: "heroThird" },
+  { t: "Lege uren", d: "Daluren tegen een lager tarief. De zaal is er toch.", slot: "swimming" },
+  { t: "Trainers van de club", d: "Personal trainers van de club bieden sessies aan, binnen én buiten de muren.", slot: "trainer" },
+];
+---
+
+<section class="section section--paper gyms" id="sportscholen" data-theme="light">
+  <div class="container gyms-grid">
+    <div class="gyms-copy">
+      <p class="eyebrow" data-reveal>Sportscholen op de kaart</p>
+      <h2 class="display h2 gyms-title" data-split>Ook de sportschool staat op de kaart.</h2>
+      <div class="gyms-text" data-reveal>
+        <p>
+          UNCLUB is niet tegen de sportschool. De sportschool is onderdeel van de grootste sportschool van Nederland.
+          Iedere commerciële club, studio of boksschool meldt zichzelf aan en zet aanbod op de kaart, naast de runclub
+          en het park.
+        </p>
+        <p>
+          Voor de sporter betekent dat: vanavond krachttraining bij de club om de hoek, zonder abonnement. Voor de club:
+          nieuwe mensen uit een publiek dat nooit binnenkwam, en volle zalen op uren die nu leeg staan.
+        </p>
+      </div>
+      <p class="lead gyms-lead" data-reveal>Van concurrent naar aanbod.</p>
+    </div>
+
+    <ul class="offers" data-follow data-stagger>
+      {
+        offers.map((o, i) => (
+          <li class="offer" data-follow-item={i} data-stagger-item>
+            <span class="offer-n">0{i + 1}</span>
+            <div>
+              <p class="offer-t">{o.t}</p>
+              <p class="offer-d">{o.d}</p>
+            </div>
+            <span class="offer-arrow" aria-hidden="true">
+              →
+            </span>
+          </li>
+        ))
+      }
+      <li class="follow" aria-hidden="true" data-follow-visual>
+        {offers.map((o, i) => <Photo slot={o.slot} ratio={4 / 5} sizes="18rem" data-follow-img={i} />)}
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .gyms-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+
+  .gyms-title {
+    margin-top: 1.25rem;
+    font-size: clamp(2.2rem, 1.4rem + 3vw, 4.4rem);
+  }
+
+  .gyms-text {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    max-width: 54ch;
+  }
+
+  .gyms-lead {
+    margin-top: 1.5rem;
+    font-weight: 700;
+  }
+
+  .offers {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .offer {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.4rem 0.5rem 1.4rem 1.25rem;
+    border-bottom: 1px solid var(--line);
+    cursor: default;
+  }
+
+  .offer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    border-left: 5px solid var(--orange);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.5s var(--ease-energy);
+  }
+
+  .offer:hover::before {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+
+  .offer > * {
+    position: relative;
+  }
+
+  .offer-n {
+    color: var(--orange);
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .offer-t {
+    font-size: clamp(1.3rem, 1rem + 1.1vw, 2rem);
+    font-weight: 850;
+    font-variation-settings: "wdth" 110;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .offer-d {
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .offer-arrow {
+    color: var(--orange);
+    font-size: 1.5rem;
+    font-weight: 800;
+    opacity: 0;
+    translate: -0.75rem 0;
+    transition:
+      opacity 0.3s,
+      translate 0.5s var(--ease-energy);
+  }
+
+  .offer:hover .offer-arrow {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .follow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: clamp(10rem, 16vw, 15rem);
+    aspect-ratio: 4 / 5;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.6;
+    box-shadow: 0 2rem 3rem -1.5rem rgb(0 0 0 / 0.5);
+  }
+
+  .follow :global(.photo) {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  .follow :global(.photo.is-active) {
+    opacity: 1;
+  }
+
+  .follow :global(.photo-credit) {
+    display: none;
+  }
+
+  @media (hover: none), (max-width: 60rem) {
+    .follow {
+      display: none;
+    }
+  }
+
+  @media (max-width: 60rem) {
+    .gyms-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
